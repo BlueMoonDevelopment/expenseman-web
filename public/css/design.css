@@ -1,0 +1,33 @@
+/* Navbar */
+.navbar {
+   height: 7.00rem !important; 
+}
+
+.navbar-item img {
+    max-height: 5.75rem !important; 
+}
+
+.navbar-item, .navbar-link {
+    padding: .5rem 1.75rem !important;
+}
+
+/* Footer */
+.hero-foot {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: #232323
+}
+
+/* Cookie Consent https://www.osano.com/cookieconsent/documentation/about-cookie-consent/ */
+.cc-compliance a {
+    color: white !important;
+}
+
+/* Funktionsklassen */
+.is-centered {
+    text-align: center !important;
+}
+
+.not-center {
+    text-align: initial !important;
+}
