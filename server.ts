@@ -10,6 +10,7 @@ import session from 'express-session';
  */
 import { info } from './logmanager';
 import { loadRoutes } from './routemanager';
+import { setupPassport } from './passportmanager';
 
 /**
  * Required configuration sections
@@ -20,7 +21,6 @@ import { website_port, session_secret } from './config.json';
  * App Variables
  */
 const app: Application = express();
-const oneDay = 1000 * 60 * 60 * 24;
 
 /**
  * App Configuration
@@ -32,13 +32,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: session_secret,
     saveUninitialized: true,
-    cookie: { maxAge: oneDay },
     resave: false,
 }));
 
 /**
  * Routes Definitions
  */
+setupPassport(app);
 loadRoutes(app);
 
 /**
