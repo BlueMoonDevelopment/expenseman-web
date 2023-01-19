@@ -9,7 +9,6 @@ import session from 'express-session';
  * Required internal modules
  */
 import { info } from './logmanager';
-import { DBManager } from './dbmanager';
 import { loadRoutes } from './routemanager';
 
 /**
@@ -22,12 +21,6 @@ import { website_port, session_secret } from './config.json';
  */
 const app: Application = express();
 const oneDay = 1000 * 60 * 60 * 24;
-
-/**
- * SQL Connection.
- */
-const db: DBManager = new DBManager();
-db.createTables();
 
 /**
  * App Configuration
@@ -46,7 +39,7 @@ app.use(session({
 /**
  * Routes Definitions
  */
-loadRoutes(app, db);
+loadRoutes(app);
 
 /**
  * Server Activation
