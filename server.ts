@@ -9,8 +9,8 @@ import session from 'express-session';
  * Required internal modules
  */
 import { info } from './logmanager';
-import { DBManager } from './dbmanager';
 import { loadRoutes } from './routemanager';
+import { setupPassport } from './passportmanager';
 
 /**
  * Required configuration sections
@@ -21,13 +21,6 @@ import { website_port, session_secret } from './config.json';
  * App Variables
  */
 const app: Application = express();
-const oneDay = 1000 * 60 * 60 * 24;
-
-/**
- * SQL Connection.
- */
-const db: DBManager = new DBManager();
-db.createTables();
 
 /**
  * App Configuration
@@ -39,14 +32,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: session_secret,
     saveUninitialized: true,
-    cookie: { maxAge: oneDay },
     resave: false,
 }));
 
 /**
  * Routes Definitions
  */
-loadRoutes(app, db);
+setupPassport(app);
+loadRoutes(app);
 
 /**
  * Server Activation

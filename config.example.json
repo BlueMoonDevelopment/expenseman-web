@@ -1,11 +1,7 @@
 {
-    "sql_enabled": false,
-    "sql_host": "127.0.0.1",
-    "sql_user": "user",
-    "sql_password": "password",
-    "sql_port": 3306,
-    "sql_dbname": "database",
     "website_port": 8080,
     "debug_log": false,
-    "session_secret": "your_secret"
+    "session_secret": "your_secret",
+    "google_oauth_client_id": "your_clientid",
+    "google_oauth_client_secret": "your_client_secret"
 }

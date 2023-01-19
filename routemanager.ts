@@ -1,14 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import { info, error, debug } from './logmanager';
-import { DBManager } from './dbmanager';
 import { Application } from 'express';
 
 /**
  * Dynamically loads backend and frontend files and loads the views.
  * @param app
  */
-export function loadRoutes(app: Application, db: DBManager) {
+export function loadRoutes(app: Application) {
     const backendPath = path.join(path.join(__dirname, 'views'), 'backend');
     const backendFiles = fs.readdirSync(backendPath).filter(file => file.endsWith('.ts'));
     const frontendPath = path.join(path.join(__dirname, 'views'), 'frontend');
@@ -102,8 +101,6 @@ export function loadRoutes(app: Application, db: DBManager) {
                 if (err) {
                     throw err;
                 }
-
-                db.increaseViews(route.urlpath);
 
                 if (typeof route.onCall === 'function') {
                     debug('File has declared an onCall() function! Calling now...');
