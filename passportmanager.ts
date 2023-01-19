@@ -28,7 +28,7 @@ export function setupPassport(app: Application) {
     passport.use(new GoogleStrategy({
         clientID: google_oauth_client_id,
         clientSecret: google_oauth_client_secret,
-        callbackURL: "https://expenseman.app/auth/google/callback"
+        callbackURL: 'https://expenseman.app/auth/google/callback',
     },
         function (accessToken, refreshToken, profile, done) {
             userProfile = profile;
