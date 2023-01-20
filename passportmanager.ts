@@ -6,10 +6,34 @@ import axios from 'axios';
 import { google_oauth_client_id, google_oauth_client_secret } from './config.json';
 
 
-export function setupPassport(app: Application) {
+export async function setupPassport(app: Application) {
     let userProfile: googleauth.Profile;
     app.use(passport.initialize());
     app.use(passport.session());
+
+
+    app.post('/auth/signup', (req, res) => {
+        const email = req.body.email;
+        const pw = req.body.password;
+
+        checkIfUserExists(email).then((exists) => {
+            if (exists) {
+                const response = await axios.post('https://api.expenseman.app/auth/signup', JSON.stringify({ email: email, password: pw }), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.status == 200) {
+                    if (response.data.accessToken) {
+                        res.cookie('accessToken', response.data.accessToken);
+                    }
+                }
+            } else {
+                res.redirect('/auth/error');
+            }
+        });
+    });
 
     app.get('/auth/success', (req, res) => {
         if (userProfile && userProfile.emails) {

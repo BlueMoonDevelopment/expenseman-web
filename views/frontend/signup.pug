@@ -1,15 +1,15 @@
 extends layout
 
 block layout-content
-  .field
-    label.label
-      p Email
-    .control
-      input.input(type="email" readonly value=email)
-  .field
-    label.label
-      p Password
-    .control
-      input.input(type="password")
-  button.button.is-primary
-    p Sign In
+  form(action="/auth/signup" method="post")
+    .field
+      label.label
+        p Email
+      .control
+        input.input(type="email" readonly value=email id="email")
+    .field
+      label.label
+        p Password
+      .control
+        input.input(type="password" id="password")
+    input.button.is-primary(type="submit" value="Sign Up")
