@@ -1,6 +1,7 @@
 import { Application } from 'express';
 import passport from 'passport';
 import googleauth from 'passport-google-oauth';
+import axios from 'axios';
 
 import { google_oauth_client_id, google_oauth_client_secret } from './config.json';
 
@@ -11,14 +12,16 @@ export function setupPassport(app: Application) {
     app.use(passport.session());
 
     app.get('/auth/success', (req, res) => {
-        if (userProfile) {
-            const emailObj = userProfile.emails![0];
-            const email = emailObj.value;
-            const type = emailObj.type!;
-            console.log(emailObj);
-            console.log(type);
+        if (userProfile && userProfile.emails) {
+            const email = userProfile.emails[0].value;
             console.log(email);
-            res.status(200).send(userProfile._json);
+            checkIfUserExists(email).then((exists) => {
+                if (exists) {
+                    res.redirect('/auth/signin');
+                } else {
+                    res.redirect('/auth/signup');
+                }
+            });
         } else {
             res.redirect('/auth/error');
         }
@@ -60,4 +63,19 @@ export function setupPassport(app: Application) {
             }
         }
     );
+}
+
+async function checkIfUserExists(emailVal: string): Promise<boolean> {
+    const res = await axios.post('https://api.expenseman.app/auth/checkuser', JSON.stringify({ email: emailVal }), {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    console.log(res);
+    if (res.status == 200) {
+        const exists: boolean = res.data.exists;
+        return exists;
+    } else {
+        return false;
+    }
 }
