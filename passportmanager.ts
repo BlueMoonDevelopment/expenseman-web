@@ -11,7 +11,9 @@ export function setupPassport(app: Application) {
     app.use(passport.session());
 
     app.get('/auth/success', (req, res) => {
-        const email = userProfile.emails![0];
+        const emailObj = userProfile.emails![0];
+        const email = emailObj.value;
+        console.log(emailObj);
         console.log(email);
         res.status(200).send(userProfile._json);
     });
