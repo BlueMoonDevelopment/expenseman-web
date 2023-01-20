@@ -21,10 +21,9 @@ export function setupPassport(app: Application) {
                 }
             });
         } else {
-            res.redirect('/auth/');
+            res.redirect('/auth');
         }
     });
-    app.get('/auth/error', (req, res) => res.status(500).send('error logging in'));
 
     const GoogleStrategy = googleauth.OAuth2Strategy;
 
@@ -40,13 +39,13 @@ export function setupPassport(app: Application) {
     ));
 
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-    app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/error' }),
+    app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/error' }),
         function (req, res) {
             // Successful authentication, redirect success.
             if (userProfile.emails) {
                 res.redirect('/auth/success');
             } else {
-                res.redirect('/auth/error');
+                res.redirect('/error');
             }
         }
     );

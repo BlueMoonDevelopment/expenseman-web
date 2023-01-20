@@ -5,16 +5,17 @@ import axios from 'axios';
 function setupPostSignup(app: Application) {
     app.post('/auth/signup', async (req, res) => {
         if (await isLoggedIn(req)) {
-            res.status(200).send('You are already logged in');
+            res.cookie('errormsg', 'You are already logged in.');
+            res.redirect('/error');
             return;
         }
         const email = req.body.email;
         const pw = req.body.password;
 
         checkIfUserExists(email).then(async (exists) => {
-            console.log('debug' + exists);
             if (exists) {
-                res.status(401).send('User is already existing.');
+                res.cookie('errormsg', 'User is already existing.');
+                res.redirect('/error');
             } else {
                 const response = await axios.post('https://api.expenseman.app/auth/signup', JSON.stringify({ email: email, password: pw }), {
                     headers: {
@@ -26,12 +27,11 @@ function setupPostSignup(app: Application) {
                     if (response.data.accessToken) {
                         res.cookie('accessToken', response.data.accessToken);
                         res.cookie('userId', response.data.id);
-                        res.status(200).send('You have been registered and signed in.');
+                        res.cookie('successmsg', 'You have been registered and signed in.');
+                        res.redirect('/success');
                     }
-                } else if (response.status == 500) {
-                    console.log('error');
                 } else {
-                    res.status(200).send('error, unknown response status');
+                    res.redirect('/error');
                 }
             }
         });
@@ -41,7 +41,8 @@ function setupPostSignup(app: Application) {
 function setupPostSignin(app: Application) {
     app.post('/auth/signin', async (req, res) => {
         if (await isLoggedIn(req)) {
-            res.status(200).send('You are already logged in');
+            res.cookie('errormsg', 'You are already logged in.');
+            res.redirect('/error');
             return;
         }
         const email = req.body.email;
@@ -60,16 +61,15 @@ function setupPostSignin(app: Application) {
                     if (response.data.accessToken) {
                         res.cookie('accessToken', response.data.accessToken);
                         res.cookie('userId', response.data.id);
-                        res.status(200).send('You have been signed in.');
+                        res.cookie('successmsg', 'You have been signed in.');
+                        res.redirect('/success');
                     }
-                } else if (response.status == 500) {
-                    console.log('error');
                 } else {
-                    res.status(200).send('error, unknown response status');
+                    res.redirect('/error');
                 }
 
             } else {
-                res.redirect(`/auth/signup/${email}`);
+                res.redirect('/auth');
             }
         });
     });
