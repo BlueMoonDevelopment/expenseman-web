@@ -1,0 +1,15 @@
+extends layout
+
+block layout-content
+  .field
+    label.label
+      p Email
+    .control
+      input.input(type="email" readonly value="#{email}")
+  .field
+    label.label
+      p Password
+    .control
+      input.input(type="password")
+  button.button.is-primary
+    p Sign In

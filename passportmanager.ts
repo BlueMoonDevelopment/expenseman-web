@@ -17,9 +17,9 @@ export function setupPassport(app: Application) {
             console.log(email);
             checkIfUserExists(email).then((exists) => {
                 if (exists) {
-                    res.redirect('/auth/signin');
+                    res.redirect(`/auth/signin?email=${email}`);
                 } else {
-                    res.redirect('/auth/signup');
+                    res.redirect(`/auth/signup?email=${email}`);
                 }
             });
         } else {
