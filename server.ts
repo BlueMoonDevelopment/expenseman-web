@@ -5,6 +5,7 @@ import express, { Application } from 'express';
 import path from 'path';
 import session from 'express-session';
 import bodyparser from 'body-parser';
+import cookies from 'cookie-parser';
 
 /**
  * Required internal modules
@@ -37,6 +38,7 @@ app.use(session({
 }));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
+app.use(cookies());
 
 /**
  * Routes Definitions

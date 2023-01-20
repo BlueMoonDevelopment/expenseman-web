@@ -1,5 +1,16 @@
 extends layout
 
 block layout-content
-  h1.title.is-size-1-desktop.is-size-2-touch.glitch
-    p ExpenseMan
+  form(action="/auth/signin" method="post")
+    .field
+      label.label
+        p Email
+      .control
+        input.input(type="email" readonly value=email name="email" id="email")
+    .field
+      label.label
+        p Password
+      .control
+        input.input(type="password" name="password" id="password")
+    button.button.is-primary(type="submit")
+     p Sign In

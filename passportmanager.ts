@@ -2,6 +2,7 @@ import { Application } from 'express';
 import passport from 'passport';
 import googleauth from 'passport-google-oauth';
 import axios from 'axios';
+import { isLoggedIn } from './authman';
 
 import { google_oauth_client_id, google_oauth_client_secret } from './config.json';
 
@@ -30,6 +31,7 @@ export function setupPassport(app: Application) {
                 if (response.status == 200) {
                     if (response.data.accessToken) {
                         res.cookie('accessToken', response.data.accessToken);
+                        res.cookie('userId', response.data.id);
                         res.status(200).send('You have been registered and signed in.');
                     }
                 } else if (response.status == 500) {
@@ -37,6 +39,41 @@ export function setupPassport(app: Application) {
                 } else {
                     res.status(200).send('error, unknown response status');
                 }
+            }
+        });
+    });
+
+    app.post('/auth/signin', async (req, res) => {
+        if (await isLoggedIn(req)) {
+            res.status(200).send('You are already logged in');
+            return;
+        }
+        const email = req.body.email;
+        const pw = req.body.password;
+
+        checkIfUserExists(email).then(async (exists) => {
+            console.log('debug' + exists);
+            if (exists) {
+                const response = await axios.post('https://api.expenseman.app/auth/signin', JSON.stringify({ email: email, password: pw }), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.status == 200) {
+                    if (response.data.accessToken) {
+                        res.cookie('accessToken', response.data.accessToken);
+                        res.cookie('userId', response.data.id);
+                        res.status(200).send('You have been signed in.');
+                    }
+                } else if (response.status == 500) {
+                    console.log('error');
+                } else {
+                    res.status(200).send('error, unknown response status');
+                }
+
+            } else {
+                res.redirect(`/auth/signup/${email}`);
             }
         });
     });
