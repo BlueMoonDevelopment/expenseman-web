@@ -10,7 +10,11 @@ export function setupPassport(app: Application) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.get('/auth/success', (req, res) => res.status(200).send(userProfile._json));
+    app.get('/auth/success', (req, res) => {
+        const email = userProfile.emails![0];
+        console.log(email);
+        res.status(200).send(userProfile._json);
+    });
     app.get('/auth/error', (req, res) => res.status(500).send('error logging in'));
 
     passport.serializeUser(function (user, cb) {
@@ -40,6 +44,11 @@ export function setupPassport(app: Application) {
     app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/error' }),
         function (req, res) {
             // Successful authentication, redirect success.
-            res.redirect('/auth/success');
-        });
+            if (userProfile.emails) {
+                res.redirect('/auth/success');
+            } else {
+                res.redirect('/auth/error');
+            }
+        }
+    );
 }
