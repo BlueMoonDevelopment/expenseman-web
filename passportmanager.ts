@@ -11,11 +11,18 @@ export function setupPassport(app: Application) {
     app.use(passport.session());
 
     app.get('/auth/success', (req, res) => {
-        const emailObj = userProfile.emails![0];
-        const email = emailObj.value;
-        console.log(emailObj);
-        console.log(email);
-        res.status(200).send(userProfile._json);
+        if (userProfile) {
+            const emailObj = userProfile.emails![0];
+            const email = emailObj.value;
+            const type = emailObj.type!;
+            console.log(emailObj);
+            console.log(type);
+            console.log(email);
+            res.status(200).send(userProfile._json);
+        } else {
+            res.redirect('/auth/error');
+        }
+
     });
     app.get('/auth/error', (req, res) => res.status(500).send('error logging in'));
 
