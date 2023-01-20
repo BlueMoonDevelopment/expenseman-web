@@ -2,6 +2,9 @@
 public/css/mystyles.css
 config.json
 
+# IntelliJ
+.idea
+
 # Logs
 logs
 *.log

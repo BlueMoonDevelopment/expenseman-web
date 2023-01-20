@@ -80,7 +80,7 @@ export function loadRoutes(app: Application) {
              */
             if (typeof route.onLoad === 'function') {
                 debug('File has declared an onLoad() function! Calling now...');
-                const variables: Map<string, any> = route.onLoad(req);
+                const variables: Map<string, any> = route.onLoad(req, res);
                 /**
                  * Check if map is not empty
                  */
@@ -106,8 +106,6 @@ export function loadRoutes(app: Application) {
                     debug('File has declared an onCall() function! Calling now...');
                     route.onCall();
                 }
-
-                debug(options);
 
                 /**
                  * Finally send the html to the browser.
