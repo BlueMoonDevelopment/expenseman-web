@@ -13,16 +13,16 @@ export function setupPassport(app: Application) {
         if (userProfile && userProfile.emails) {
             const email = userProfile.emails[0].value;
             checkIfUserExists(email).then((exists) => {
+                res.cookie('googleEmail', email);
                 if (exists) {
-                    res.redirect(`/auth/signin/${email}`);
+                    res.redirect('/auth/signin/');
                 } else {
-                    res.redirect(`/auth/signup/${email}`);
+                    res.redirect('/auth/signup/');
                 }
             });
         } else {
-            res.redirect('/auth/error');
+            res.redirect('/auth/');
         }
-
     });
     app.get('/auth/error', (req, res) => res.status(500).send('error logging in'));
 

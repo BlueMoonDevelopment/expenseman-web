@@ -72,7 +72,7 @@ export function loadRoutes(app: Application) {
          * Now finally set the routes, this basically can be translated to:
          * if route.urlpath is called, render route.pugfile with given options and execute the function
          */
-        app.get(route.urlpath, (req, res) => {
+        app.get(route.urlpath, async (req, res) => {
             /**
              * Check if backend file has an onLoad() function in module.exports
              * onLoad() has to return a Map object containing options.
@@ -80,7 +80,7 @@ export function loadRoutes(app: Application) {
              */
             if (typeof route.onLoad === 'function') {
                 debug('File has declared an onLoad() function! Calling now...');
-                const variables: Map<string, any> = route.onLoad(req, res);
+                const variables: Map<string, any> = await route.onLoad(req, res);
                 /**
                  * Check if map is not empty
                  */
@@ -96,22 +96,27 @@ export function loadRoutes(app: Application) {
                 }
             }
 
-            res.render(route.pugfile, options, function (err, html) {
-                debug(`Route called: ${route.urlpath} with title: ${options.title}`);
-                if (err) {
-                    throw err;
-                }
+            if (!res.headersSent) {
+                res.render(route.pugfile, options, function (err, html) {
+                    debug(`Route called: ${route.urlpath} with title: ${options.title}`);
+                    if (err) {
+                        throw err;
+                    }
 
-                if (typeof route.onCall === 'function') {
-                    debug('File has declared an onCall() function! Calling now...');
-                    route.onCall();
-                }
+                    if (typeof route.onCall === 'function') {
+                        debug('File has declared an onCall() function! Calling now...');
+                        route.onCall();
+                    }
 
-                /**
-                 * Finally send the html to the browser.
-                 */
-                res.send(html);
-            });
+                    /**
+                     * Finally send the html to the browser.
+                     */
+                    if (!res.headersSent) {
+                        res.send(html);
+                    }
+                });
+            }
+
         });
     }
 

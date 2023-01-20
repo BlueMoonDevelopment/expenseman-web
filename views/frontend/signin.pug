@@ -1,16 +1,14 @@
 extends layout
 
 block layout-content
+  h1.title.is-size-3-desktop.is-size-2-touch.glitch
+    p Sign in: #{email}
   form(action="/auth/signin" method="post")
-    .field
-      label.label
-        p Email
-      .control
-        input.input(type="email" readonly value=email name="email" id="email")
+    input.input(type="hidden" readonly value=email name="email" id="email")
     .field
       label.label
         p Password
       .control
-        input.input(type="password" name="password" id="password")
+        input.input(type="password" name="password" id="password" placeholder="***************************")
     button.button.is-primary(type="submit")
-     p Sign In
+      p Sign In

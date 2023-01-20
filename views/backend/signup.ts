@@ -1,11 +1,22 @@
 import { Request, Response } from 'express';
+import { isLoggedIn } from '../../controllers/auth.controller';
 
 export const title = 'Sign Up';
 export const pugfile = 'signup.pug';
-export const urlpath = '/auth/signup/:email';
+export const urlpath = '/auth/signup/';
 
-export function onLoad(req: Request, res: Response): Map<string, any> {
+export async function onLoad(req: Request, res: Response): Promise<Map<string, any>> {
+    if (await isLoggedIn(req)) {
+        res.status(403).send('Already logged in');
+    }
     const map = new Map<string, any>();
-    map.set('email', req.params.email);
+    const email = req.cookies.googleEmail;
+
+    if (!email) {
+        res.redirect('/auth');
+    } else {
+        res.clearCookie('googleEmail');
+        map.set('email', email);
+    }
     return map;
 }
