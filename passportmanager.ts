@@ -6,7 +6,7 @@ import axios from 'axios';
 import { google_oauth_client_id, google_oauth_client_secret } from './config.json';
 
 
-export async function setupPassport(app: Application) {
+export function setupPassport(app: Application) {
     let userProfile: googleauth.Profile;
     app.use(passport.initialize());
     app.use(passport.session());
@@ -16,8 +16,11 @@ export async function setupPassport(app: Application) {
         const email = req.body.email;
         const pw = req.body.password;
 
-        checkIfUserExists(email).then((exists) => {
+        checkIfUserExists(email).then(async (exists) => {
+            console.log('debug' + exists);
             if (exists) {
+                res.status(401).send('User is already existing.');
+            } else {
                 const response = await axios.post('https://api.expenseman.app/auth/signup', JSON.stringify({ email: email, password: pw }), {
                     headers: {
                         'Content-Type': 'application/json',
@@ -27,10 +30,13 @@ export async function setupPassport(app: Application) {
                 if (response.status == 200) {
                     if (response.data.accessToken) {
                         res.cookie('accessToken', response.data.accessToken);
+                        res.status(200).send('You have been registered and signed in.');
                     }
+                } else if (response.status == 500) {
+                    console.log('error');
+                } else {
+                    res.status(200).send('error, unknown response status');
                 }
-            } else {
-                res.redirect('/auth/error');
             }
         });
     });
@@ -95,7 +101,6 @@ async function checkIfUserExists(emailVal: string): Promise<boolean> {
             'Content-Type': 'application/json',
         },
     });
-    console.log(res);
     if (res.status == 200) {
         const exists: boolean = res.data.exists;
         return exists;

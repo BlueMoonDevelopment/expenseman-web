@@ -4,6 +4,7 @@
 import express, { Application } from 'express';
 import path from 'path';
 import session from 'express-session';
+import bodyparser from 'body-parser';
 
 /**
  * Required internal modules
@@ -34,6 +35,8 @@ app.use(session({
     saveUninitialized: true,
     resave: false,
 }));
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
 
 /**
  * Routes Definitions
