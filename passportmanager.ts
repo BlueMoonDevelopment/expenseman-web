@@ -13,7 +13,11 @@ export function setupPassport(app: Application) {
     app.use(passport.session());
 
 
-    app.post('/auth/signup', (req, res) => {
+    app.post('/auth/signup', async (req, res) => {
+        if (await isLoggedIn(req)) {
+            res.status(200).send('You are already logged in');
+            return;
+        }
         const email = req.body.email;
         const pw = req.body.password;
 
