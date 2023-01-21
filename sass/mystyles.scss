@@ -4,18 +4,45 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
 
 // Set your brand colors
-$blue: #4361ee;
-$lighter-blue: #94A6F5;
+
+$raisin-black: #18171c;
+$rich-black: #0a0a0a;
+$french-blue: #0e72b3;
+$darker-blue: #0c5f97;
+$white: #FFFFFF;
 
 // Update Bulma's global variables
+//background coloring
+$body-background-color: $raisin-black;
+$body-color: $white;
+
+//text coloring
+$box-color: $raisin-black;
+$box-background-color: $white;
+$text: $white;
+$text-strong: $white;
 $family-sans-serif: "Nunito", sans-serif;
-$primary: $blue;
-$link: $blue;
-$link-hover: $lighter-blue;
-$link-active: $blue;
-$link-focus: $blue;
-$tabs-link-color: $blue;
-$tabs-link-hover-color: $lighter-blue;
+
+//Color shemes
+$primary: $rich-black;
+$scheme-main: $rich-black;
+
+//Links
+$link: $french-blue;
+$link-hover: $darker-blue;
+$link-active: $french-blue;
+$link-focus: $french-blue;
+$tabs-link-color: $french-blue;
+$tabs-link-hover-color: $darker-blue;
+
+//footer
+$footer-padding: 1rem 1rem;
+$footer-background-color: $rich-black;
+
+//navbar
+$navbar-height: 7rem;
+$navbar-padding-horizontal: 2rem;
+$navbar-item-img-max-height: 5.75rem;
 
 // Update some of Bulma's component variables
 $control-border-width: 2px;
@@ -24,7 +51,3 @@ $input-shadow: none;
 
 // Import only what you need from Bulma
 @import "../node_modules/bulma/bulma.sass";
-
-$background: $grey-lighter;
-$body-background-color: $background; 
-$hr-background-color: $background;  

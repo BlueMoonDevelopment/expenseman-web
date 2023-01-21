@@ -21,14 +21,13 @@ html
         link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700")
         link(rel="stylesheet" href="/css/mystyles.css")
         link(rel="stylesheet" href="/css/design.css")
-        link(rel="stylesheet" href="/css/captcha.css")
         link(rel="stylesheet" href="/lib/to-top/material-scrolltop.css")
         link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css")
 
     body
         section.hero.is-fullheight
             .hero-head
-                nav.navbar.is-white
+                nav.navbar.is-primary
                     .container
                         .navbar-brand
                             a.navbar-item(href="/")
@@ -39,8 +38,6 @@ html
                                 span
                         .navbar-menu#navbarMenu
                             .navbar-start
-                                a.navbar-item(href="/about")
-                                    p About
                                 a.navbar-item(href="/imprint")
                                     p Imprint
                                 a.navbar-item(href="https://github.com/BlueMoonDevelopment" target="_blank")
@@ -57,12 +54,25 @@ html
             .hero-body
                 .container.has-text-centered
                     block layout-content
-            .hero-foot
-                .is-centered
-                    p © 2022 BlueMoonDevelopment
-                    p See this website's Source Code on
-                        a(href="https://github.com/BlueMoonDevelopment/ExpenseMan-web" target="_blank")
-                            p GitHub
+            footer.footer
+                .hero.foot
+                    .level
+                        .level-left
+                            p © 2022 BlueMoonDevelopment
+                        .level-right
+                            .columns
+                                .column
+                                    a(href="https://github.com/BlueMoonDevelopment" target="_blank")
+                                        button.button.is-link.is-rounded
+                                            span.icon
+                                                i.fab.fa-github
+                                            span BlueMoonDevelopment
+                                .column
+                                    a(href="https://github.com/BlueMoonDevelopment/expenseman-web" target="_blank")
+                                        button.button.is-link.is-rounded
+                                            span.icon
+                                                i.fab.fa-github
+                                            span Source Code
         script(src="https://code.jquery.com/jquery-3.5.1.min.js")
         script(src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false")
         script(src="/lib/to-top/material-scrolltop.js")
