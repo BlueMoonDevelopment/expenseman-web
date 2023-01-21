@@ -17,16 +17,19 @@ function setupPostSignup(app: Application) {
                 res.cookie('errormsg', 'User is already existing.');
                 res.redirect('/error');
             } else {
-                const response = await axios.post('https://api.expenseman.app/auth/signup', JSON.stringify({ email: email, password: pw }), {
+                const response = await axios.post('https://api.expenseman.app/auth/signup', JSON.stringify({
+                    email: email,
+                    password: pw,
+                }), {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 });
 
                 if (response.status == 200) {
-                    if (response.data.accessToken) {
-                        res.cookie('accessToken', response.data.accessToken);
-                        res.cookie('userId', response.data.id);
+                    if (response.data.accessToken && response.data.id) {
+                        req.session.userId = response.data.id;
+                        req.session.accessToken = response.data.accessToken;
                         res.cookie('successmsg', 'You have been registered and signed in.');
                         res.redirect('/success');
                     }
@@ -51,16 +54,19 @@ function setupPostSignin(app: Application) {
 
         checkIfUserExists(email).then(async (exists) => {
             if (exists) {
-                const response = await axios.post('https://api.expenseman.app/auth/signin', JSON.stringify({ email: email, password: pw }), {
+                const response = await axios.post('https://api.expenseman.app/auth/signin', JSON.stringify({
+                    email: email,
+                    password: pw,
+                }), {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 });
 
                 if (response.status == 200) {
-                    if (response.data.accessToken) {
-                        res.cookie('accessToken', response.data.accessToken);
-                        res.cookie('userId', response.data.id);
+                    if (response.data.accessToken && response.data.id) {
+                        req.session.userId = response.data.id;
+                        req.session.accessToken = response.data.accessToken;
                         res.cookie('successmsg', 'You have been signed in.');
                         res.redirect('/success');
                         return;
