@@ -3,6 +3,9 @@
  */
 import express, { Application } from 'express';
 import path from 'path';
+/**
+ * Types
+ */
 import session from 'express-session';
 import bodyparser from 'body-parser';
 import cookies from 'cookie-parser';
@@ -20,6 +23,13 @@ import { setupAuthRoutes } from './routes/auth.routes';
  * Required configuration sections
  */
 import { session_secret, website_port } from './config.json';
+
+declare module 'express-session' {
+    interface Session {
+        userId: string;
+        accessToken: string;
+    }
+}
 
 /**
  * App Variables
