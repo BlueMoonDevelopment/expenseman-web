@@ -19,12 +19,13 @@ import { setupAuthRoutes } from './routes/auth.routes';
 /**
  * Required configuration sections
  */
-import { website_port, session_secret } from './config.json';
+import { session_secret, website_port } from './config.json';
 
 /**
  * App Variables
  */
 const app: Application = express();
+const oneDay = 1000 * 60 * 60 * 24;
 
 /**
  * App Configuration
@@ -40,6 +41,7 @@ app.use(session({
     secret: session_secret,
     saveUninitialized: true,
     resave: false,
+    cookie: { maxAge: oneDay },
 }));
 
 /**
