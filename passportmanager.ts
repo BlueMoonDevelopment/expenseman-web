@@ -45,6 +45,7 @@ export function setupPassport(app: Application) {
             if (userProfile.emails) {
                 res.redirect('/auth/success');
             } else {
+                res.cookie('errormsg', 'Unknown error during google OAuth 2.0 happened.');
                 res.redirect('/error');
             }
         }
