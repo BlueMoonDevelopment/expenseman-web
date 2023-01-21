@@ -6,7 +6,7 @@ export const urlpath = '/success';
 
 export async function onLoad(req: Request, res: Response): Promise<Map<string, any>> {
     const map = new Map<string, any>();
-    const msg = req.cookies.errormsg;
+    const msg = req.cookies.successmsg;
 
     if (!msg) {
         res.redirect('/error');
