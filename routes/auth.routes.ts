@@ -63,6 +63,7 @@ function setupPostSignin(app: Application) {
                         res.cookie('userId', response.data.id);
                         res.cookie('successmsg', 'You have been signed in.');
                         res.redirect('/success');
+                        return;
                     }
                 } else {
                     res.redirect('/error');
