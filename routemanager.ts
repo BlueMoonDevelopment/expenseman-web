@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { info, error, debug } from './logmanager';
 import { Application } from 'express';
+import { debug, error, info } from './logmanager';
+import { isLoggedIn } from './controllers/auth.controller';
 
 /**
  * Dynamically loads backend and frontend files and loads the views.
@@ -39,8 +40,8 @@ export function loadRoutes(app: Application) {
         }
 
         /**
-        * Check if the file has urlpath in module.exports and if it is a string
-        */
+         * Check if the file has urlpath in module.exports and if it is a string
+         */
         if (typeof route.urlpath !== 'string') {
             error('urlpath is not a string or not set! skipping File.');
             continue;
@@ -67,6 +68,12 @@ export function loadRoutes(app: Application) {
          */
         const options: any[string] = [];
         options['title'] = route.title;
+
+
+        app.use(function (req, res, next) {
+            res.locals.loggedin = isLoggedIn(req);
+            next();
+        });
 
         /**
          * Now finally set the routes, this basically can be translated to:
@@ -121,8 +128,8 @@ export function loadRoutes(app: Application) {
     }
 
     /**
-    * External links start here
-    */
+     * External links start here
+     */
     app.get('/discord', (req, res) => {
         res.redirect('https://bluemoondev.org/discord');
     });
