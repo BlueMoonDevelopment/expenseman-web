@@ -69,49 +69,54 @@ export function loadRoutes(app: Application) {
         options['title'] = route.title;
 
         /**
-         * Check if backend file has an onLoad() function in module.exports
-         * onLoad() has to return a Map object containing options.
-         * If you have no options to load, return an empty Map.
-         */
-        if (typeof route.onLoad === 'function') {
-            debug('File has declared an onLoad() function! Calling now...');
-            const variables: Map<string, any> = route.onLoad();
-            /**
-             * Check if map is not empty
-             */
-            if (variables.size > 0) {
-                /**
-                 * Looping through all the entries in the map and putting them into the options Array.
-                 */
-                for (const key of variables.keys()) {
-                    const value = variables.get(key);
-                    options[key] = value;
-                    debug(`Loaded key: ${key} as value: ${value}`);
-                }
-            }
-        }
-
-        /**
          * Now finally set the routes, this basically can be translated to:
          * if route.urlpath is called, render route.pugfile with given options and execute the function
          */
-        app.get(route.urlpath, (req, res) => {
-            res.render(route.pugfile, options, function (err, html) {
-                debug(`Route called: ${route.urlpath} with title: ${options.title}`);
-                if (err) {
-                    throw err;
-                }
-
-                if (typeof route.onCall === 'function') {
-                    debug('File has declared an onCall() function! Calling now...');
-                    route.onCall();
-                }
-
+        app.get(route.urlpath, async (req, res) => {
+            /**
+             * Check if backend file has an onLoad() function in module.exports
+             * onLoad() has to return a Map object containing options.
+             * If you have no options to load, return an empty Map.
+             */
+            if (typeof route.onLoad === 'function') {
+                debug('File has declared an onLoad() function! Calling now...');
+                const variables: Map<string, any> = await route.onLoad(req, res);
                 /**
-                 * Finally send the html to the browser.
+                 * Check if map is not empty
                  */
-                res.send(html);
-            });
+                if (variables.size > 0) {
+                    /**
+                     * Looping through all the entries in the map and putting them into the options Array.
+                     */
+                    for (const key of variables.keys()) {
+                        const value = variables.get(key);
+                        options[key] = value;
+                        debug(`Loaded key: ${key} as value: ${value}`);
+                    }
+                }
+            }
+
+            if (!res.headersSent) {
+                res.render(route.pugfile, options, function (err, html) {
+                    debug(`Route called: ${route.urlpath} with title: ${options.title}`);
+                    if (err) {
+                        throw err;
+                    }
+
+                    if (typeof route.onCall === 'function') {
+                        debug('File has declared an onCall() function! Calling now...');
+                        route.onCall();
+                    }
+
+                    /**
+                     * Finally send the html to the browser.
+                     */
+                    if (!res.headersSent) {
+                        res.send(html);
+                    }
+                });
+            }
+
         });
     }
 

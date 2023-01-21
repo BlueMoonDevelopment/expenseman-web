@@ -4,6 +4,9 @@
 import express, { Application } from 'express';
 import path from 'path';
 import session from 'express-session';
+import bodyparser from 'body-parser';
+import cookies from 'cookie-parser';
+import passport from 'passport';
 
 /**
  * Required internal modules
@@ -11,6 +14,7 @@ import session from 'express-session';
 import { info } from './logmanager';
 import { loadRoutes } from './routemanager';
 import { setupPassport } from './passportmanager';
+import { setupAuthRoutes } from './routes/auth.routes';
 
 /**
  * Required configuration sections
@@ -29,6 +33,9 @@ app.use(express.json());
 app.set('views', path.join(path.join(__dirname, 'views'), 'frontend'));
 app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(cookies());
 app.use(session({
     secret: session_secret,
     saveUninitialized: true,
@@ -36,9 +43,27 @@ app.use(session({
 }));
 
 /**
+ * Passport Configuration
+ */
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function (user, cb) {
+    cb(null, user);
+});
+
+passport.deserializeUser(function (obj, cb) {
+    if (obj) {
+        cb(null, obj);
+    }
+});
+
+
+/**
  * Routes Definitions
  */
 setupPassport(app);
+setupAuthRoutes(app);
 loadRoutes(app);
 
 /**
