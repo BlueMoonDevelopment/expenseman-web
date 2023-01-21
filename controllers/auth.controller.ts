@@ -7,12 +7,7 @@ export async function checkIfUserExists(emailVal: string): Promise<boolean> {
             'Content-Type': 'application/json',
         },
     });
-    if (res.status == 200) {
-        const exists: boolean = res.data.exists;
-        return exists;
-    } else {
-        return false;
-    }
+    return res.data.exists;
 }
 
 export function isLoggedIn(req: Request): boolean {
