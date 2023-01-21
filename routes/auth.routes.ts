@@ -3,8 +3,8 @@ import { checkIfUserExists, isLoggedIn } from '../controllers/auth.controller';
 import axios from 'axios';
 
 function setupPostSignup(app: Application) {
-    app.post('/auth/signup', async (req, res) => {
-        if (await isLoggedIn(req)) {
+    app.post('/auth/signup', (req, res) => {
+        if (isLoggedIn(req)) {
             res.cookie('errormsg', 'You are already logged in.');
             res.redirect('/error');
             return;
@@ -27,11 +27,17 @@ function setupPostSignup(app: Application) {
                 });
 
                 if (response.status == 200) {
-                    if (response.data.accessToken && response.data.id) {
+                    if (response.data.message) {
+                        res.cookie('errormsg', response.data.message);
+                        res.redirect('/error');
+                    } else if (response.data.accessToken && response.data.id) {
                         req.session.userId = response.data.id;
                         req.session.accessToken = response.data.accessToken;
                         res.cookie('successmsg', 'You have been registered and signed in.');
                         res.redirect('/success');
+                    } else {
+                        res.cookie('errormsg', 'Unknown error! Please try again.');
+                        res.redirect('/error');
                     }
                 } else {
                     res.cookie('errormsg', `Unknown response status: ${response.status}`);
@@ -67,7 +73,7 @@ function setupGetLogout(app: Application) {
 
 function setupPostSignin(app: Application) {
     app.post('/auth/signin', async (req, res) => {
-        if (await isLoggedIn(req)) {
+        if (isLoggedIn(req)) {
             res.cookie('errormsg', 'You are already logged in.');
             res.redirect('/error');
             return;
@@ -87,18 +93,23 @@ function setupPostSignin(app: Application) {
                 });
 
                 if (response.status == 200) {
-                    if (response.data.accessToken && response.data.id) {
+                    if (response.data.message) {
+                        res.cookie('errormsg', response.data.message);
+                        res.redirect('/error');
+                    } else if (response.data.accessToken && response.data.id) {
                         req.session.userId = response.data.id;
                         req.session.accessToken = response.data.accessToken;
                         res.cookie('successmsg', 'You have been signed in.');
                         res.redirect('/success');
                         return;
+                    } else {
+                        res.cookie('errormsg', 'Unknown error! Please try again.');
+                        res.redirect('/error');
                     }
                 } else {
                     res.cookie('errormsg', `Unknown response status: ${response.status}`);
                     res.redirect('/error');
                 }
-
             } else {
                 res.redirect('/auth');
             }
