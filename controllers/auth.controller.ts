@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 export async function checkIfUserExists(emailVal: string): Promise<boolean> {
     const res = await axios.post('https://api.expenseman.app/auth/checkuser', JSON.stringify({ email: emailVal }), {
@@ -21,4 +21,11 @@ export function isLoggedIn(req: Request): boolean {
     } else {
         return false;
     }
+}
+
+export function logOut(res: Response) {
+    res.clearCookie('userId');
+    res.clearCookie('accessToken');
+
+    res.status(200).send({ message: 'You\'ve been logged out.' });
 }
