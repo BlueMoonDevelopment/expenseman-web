@@ -45,11 +45,13 @@ html
                                     p Imprint
                                 a.navbar-item(href="https://github.com/BlueMoonDevelopment" target="_blank")
                                     p GitHub
+                        .navbar-end
+                            .buttons
                                 if loggedin
-                                    a.navbar-item(href="/auth/signout")
+                                    a.navbar-item.button.is-warning.is-light(href="/auth/signout")
                                         p Sign out
                                 else
-                                    a.navbar-item(href="/auth")
+                                    a.navbar-item.button.is-primary.is-light(href="/auth")
                                         p Sign in/up
 
             .hero-body
