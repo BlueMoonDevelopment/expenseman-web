@@ -7,7 +7,8 @@ export const urlpath = '/auth';
 
 export async function onLoad(req: Request, res: Response): Promise<Map<string, any>> {
     if (await isLoggedIn(req)) {
-        res.status(403).send('Already logged in');
+        res.cookie('errormsg', 'You are already logged in.');
+        res.redirect('/error');
     }
     const map = new Map<string, any>();
     return map;
