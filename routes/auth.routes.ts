@@ -42,6 +42,29 @@ function setupPostSignup(app: Application) {
     });
 }
 
+function setupGetLogout(app: Application) {
+    app.get('/auth/signout', (req, res) => {
+        if (!isLoggedIn(req)) {
+            res.cookie('errormsg', 'You are not logged in.');
+            res.redirect('/error');
+            return;
+        }
+
+        req.session.destroy(err => {
+            if (err) {
+                res.cookie('errormsg', `You could not be singed out! Error: ${err}`);
+                res.redirect('/error');
+                return;
+            } else {
+                res.cookie('successmsg', 'You have been signed out.');
+                res.redirect('/success');
+                return;
+            }
+        });
+    });
+
+}
+
 function setupPostSignin(app: Application) {
     app.post('/auth/signin', async (req, res) => {
         if (await isLoggedIn(req)) {
@@ -86,4 +109,5 @@ function setupPostSignin(app: Application) {
 export function setupAuthRoutes(app: Application) {
     setupPostSignup(app);
     setupPostSignin(app);
+    setupGetLogout(app);
 }

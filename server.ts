@@ -24,6 +24,9 @@ import { setupAuthRoutes } from './routes/auth.routes';
  */
 import { session_secret, website_port } from './config.json';
 
+/**
+ * Session declaration (TS weirdness)
+ */
 declare module 'express-session' {
     interface Session {
         userId: string;
