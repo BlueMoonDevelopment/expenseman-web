@@ -31,6 +31,7 @@ function setupPostSignup(app: Application) {
                         res.redirect('/success');
                     }
                 } else {
+                    res.cookie('errormsg', `Unknown response status: ${response.status}`);
                     res.redirect('/error');
                 }
             }
@@ -49,7 +50,6 @@ function setupPostSignin(app: Application) {
         const pw = req.body.password;
 
         checkIfUserExists(email).then(async (exists) => {
-            console.log('debug' + exists);
             if (exists) {
                 const response = await axios.post('https://api.expenseman.app/auth/signin', JSON.stringify({ email: email, password: pw }), {
                     headers: {
@@ -66,6 +66,7 @@ function setupPostSignin(app: Application) {
                         return;
                     }
                 } else {
+                    res.cookie('errormsg', `Unknown response status: ${response.status}`);
                     res.redirect('/error');
                 }
 
