@@ -1,5 +1,10 @@
-# NodeJS-Website [![Node.js CI](https://github.com/BlueMoonDevelopment/ExpenseMan-web/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/BlueMoonDevelopment/ExpenseMan-web/actions/workflows/node.js.yml) ![Expensemanapp](https://cronitor.io/badges/DKXIei/production/QInGYTUwemwAcsXVREMF7N17HC4.svg)
+[![Node.js CI](https://github.com/BlueMoonDevelopment/ExpenseMan-web/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/BlueMoonDevelopment/ExpenseMan-web/actions/workflows/node.js.yml) ![Expensemanapp](https://cronitor.io/badges/DKXIei/production/QInGYTUwemwAcsXVREMF7N17HC4.svg)
 
+# Status
+
+See [Status](https://expenseman.cronitorstatus.com/) for uptime statistics
+
+# First installation
 
 NPM, NodeJS and PM2 need to be installed.
 On First startup, run 
