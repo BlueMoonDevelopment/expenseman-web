@@ -96,15 +96,15 @@ function handleResponse(response: AxiosResponse, res: Response, req: Request) {
             msg = `Error ${response.status}: ${response.data.message}`;
         }
         res.cookie('errormsg', msg);
-        res.redirect('/error');
+        res.status(response.status).redirect('/error');
     } else if (response.data.accessToken && response.data.id) {
         req.session.userId = response.data.id;
         req.session.accessToken = response.data.accessToken;
         res.cookie('successmsg', 'You have been signed in.');
-        res.redirect('/success');
+        res.status(200).redirect('/success');
     } else {
         res.cookie('errormsg', 'No userId and accessToken have been provided by the server. Please try again.');
-        res.redirect('/error');
+        res.status(500).redirect('/error');
     }
 }
 
