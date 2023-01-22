@@ -26,6 +26,7 @@ export function loadRoutes(app: Application) {
         /**
          * Require the found file to import eveything inside the module.exports array
          */
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
         const route = require(filePath);
 
         /**
@@ -67,6 +68,7 @@ export function loadRoutes(app: Application) {
         /**
          * Dynamically loading options starts here
          */
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const options: any[string] = [];
         options['title'] = route.title;
 
