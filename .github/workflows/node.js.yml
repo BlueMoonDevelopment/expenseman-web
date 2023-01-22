@@ -15,11 +15,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v3
     - name: Upgrade NPM
@@ -27,7 +22,7 @@ jobs:
     - name: Install TSC
       run: npm install -g typescript
     - name: copy-config
-      run: cp config.example.json config.json
+      run: cp src/main/typescript/config.example.json src/main/typescript/config.json
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
