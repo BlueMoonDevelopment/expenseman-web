@@ -5,7 +5,7 @@
   "scripts": {
     "start": "ts-node ./src/main/typescript/server.ts",
     "dev": "nodemon ./src/main/typescript/server.ts",
-    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss src/main/typescript/public/css/mystyles.css",
+    "css-build": "node-sass --omit-source-map-url src/main/typescript/sass/mystyles.scss src/main/typescript/public/css/mystyles.css",
     "css-watch": "npm run css-build -- --watch"
   },
   "dependencies": {
