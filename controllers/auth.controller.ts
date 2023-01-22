@@ -11,7 +11,7 @@ export async function checkIfUserExists(emailVal: string): Promise<boolean> {
 }
 
 export async function isLoggedIn(req: Request): Promise<boolean> {
-    if (req.session.userId && req.session.accessToken) {
+    if (req.session && req.session.userId && req.session.accessToken) {
         const userId = req.session.userId;
         const accessToken = req.session.accessToken;
         const response = await axios.post('https://api.expenseman.app/auth/checktoken', JSON.stringify({
