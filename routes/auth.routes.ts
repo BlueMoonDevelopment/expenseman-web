@@ -3,8 +3,8 @@ import { checkIfUserExists, isLoggedIn } from '../controllers/auth.controller';
 import axios from 'axios';
 
 function setupPostSignup(app: Application) {
-    app.post('/auth/signup', (req, res) => {
-        if (isLoggedIn(req)) {
+    app.post('/auth/signup', async (req, res) => {
+        if (await isLoggedIn(req)) {
             res.cookie('errormsg', 'You are already logged in.');
             res.redirect('/error');
             return;
@@ -73,7 +73,7 @@ function setupGetLogout(app: Application) {
 
 function setupPostSignin(app: Application) {
     app.post('/auth/signin', async (req, res) => {
-        if (isLoggedIn(req)) {
+        if (await isLoggedIn(req)) {
             res.cookie('errormsg', 'You are already logged in.');
             res.redirect('/error');
             return;

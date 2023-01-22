@@ -70,8 +70,8 @@ export function loadRoutes(app: Application) {
         options['title'] = route.title;
 
 
-        app.use(function (req, res, next) {
-            res.locals.loggedin = isLoggedIn(req);
+        app.use(async function (req, res, next) {
+            res.locals.loggedin = await isLoggedIn(req);
             next();
         });
 
