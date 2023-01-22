@@ -4,9 +4,6 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: 
-      - main
   pull_request:
     branches:
       - main
@@ -16,17 +13,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Upgrade NPM
-      run: npm install -g npm
-    - name: Install TSC
-      run: npm install -g typescript
-    - name: copy-config
-      run: cp src/main/typescript/config.example.json src/main/typescript/config.json
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: tsc --build
+      - uses: actions/checkout@v3
+      - name: Upgrade NPM
+        run: npm install -g npm
+      - name: Install TSC
+        run: npm install -g typescript
+      - name: copy-config
+        run: cp src/main/typescript/config.example.json src/main/typescript/config.json
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: tsc --build
