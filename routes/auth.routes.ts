@@ -1,6 +1,6 @@
-import { Application } from 'express';
+import { Application, Request, Response } from 'express';
 import { checkIfUserExists, isLoggedIn } from '../controllers/auth.controller';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 function setupPostSignup(app: Application) {
     app.post('/auth/signup', async (req, res) => {
@@ -26,23 +26,7 @@ function setupPostSignup(app: Application) {
                     },
                 });
 
-                if (response.status == 200) {
-                    if (response.data.message) {
-                        res.cookie('errormsg', response.data.message);
-                        res.redirect('/error');
-                    } else if (response.data.accessToken && response.data.id) {
-                        req.session.userId = response.data.id;
-                        req.session.accessToken = response.data.accessToken;
-                        res.cookie('successmsg', 'You have been registered and signed in.');
-                        res.redirect('/success');
-                    } else {
-                        res.cookie('errormsg', 'Unknown error! Please try again.');
-                        res.redirect('/error');
-                    }
-                } else {
-                    res.cookie('errormsg', `Unknown response status: ${response.status}`);
-                    res.redirect('/error');
-                }
+                handleResponse(response, res, req);
             }
         });
     });
@@ -91,30 +75,31 @@ function setupPostSignin(app: Application) {
                         'Content-Type': 'application/json',
                     },
                 });
-
-                if (response.status == 200) {
-                    if (response.data.message) {
-                        res.cookie('errormsg', response.data.message);
-                        res.redirect('/error');
-                    } else if (response.data.accessToken && response.data.id) {
-                        req.session.userId = response.data.id;
-                        req.session.accessToken = response.data.accessToken;
-                        res.cookie('successmsg', 'You have been signed in.');
-                        res.redirect('/success');
-                        return;
-                    } else {
-                        res.cookie('errormsg', 'Unknown error! Please try again.');
-                        res.redirect('/error');
-                    }
-                } else {
-                    res.cookie('errormsg', `Unknown response status: ${response.status}`);
-                    res.redirect('/error');
-                }
+                handleResponse(response, res, req);
             } else {
                 res.redirect('/auth');
             }
         });
     });
+}
+
+function handleResponse(response: AxiosResponse, res: Response, req: Request) {
+    if (response.status != 200) {
+        let msg = `Error ${response.status} An unknown error happened.`;
+        if (response.data.message) {
+            msg = `Error ${response.status}: ${response.data.message}`;
+        }
+        res.cookie('errormsg', msg);
+        res.redirect('/error');
+    } else if (response.data.accessToken && response.data.id) {
+        req.session.userId = response.data.id;
+        req.session.accessToken = response.data.accessToken;
+        res.cookie('successmsg', 'You have been signed in.');
+        res.redirect('/success');
+    } else {
+        res.cookie('errormsg', 'No userId and accessToken have been provided by the server. Please try again.');
+        res.redirect('/error');
+    }
 }
 
 export function setupAuthRoutes(app: Application) {
