@@ -1,6 +1,6 @@
 #stuff to ignore:
-public/css/mystyles.css
-config.json
+src/main/typescript/public/css/mystyles.css
+src/main/typescript/config.json
 
 # IntelliJ
 .idea

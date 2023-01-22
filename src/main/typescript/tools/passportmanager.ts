@@ -2,8 +2,8 @@ import { Application } from 'express';
 import passport from 'passport';
 import googleauth from 'passport-google-oauth';
 
-import { google_oauth_client_id, google_oauth_client_secret } from './config.json';
-import { checkIfUserExists } from './controllers/auth.controller';
+import { google_oauth_client_id, google_oauth_client_secret } from '../config.json';
+import { checkIfUserExists } from '../controllers/auth.controller';
 
 
 export function setupPassport(app: Application) {
