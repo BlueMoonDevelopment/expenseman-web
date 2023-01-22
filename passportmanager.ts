@@ -28,27 +28,21 @@ export function setupPassport(app: Application) {
     const GoogleStrategy = googleauth.OAuth2Strategy;
 
     passport.use(new GoogleStrategy({
-        clientID: google_oauth_client_id,
-        clientSecret: google_oauth_client_secret,
-        callbackURL: 'https://expenseman.app/auth/google/callback',
-    },
+            clientID: google_oauth_client_id,
+            clientSecret: google_oauth_client_secret,
+            callbackURL: 'https://expenseman.app/auth/google/callback',
+        },
         function (accessToken, refreshToken, profile, done) {
             userProfile = profile;
             return done(null, userProfile);
-        }
+        },
     ));
 
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-    app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/error' }),
-        function (req, res) {
-            // Successful authentication, redirect success.
-            if (userProfile.emails) {
-                res.redirect('/auth/success');
-            } else {
-                res.cookie('errormsg', 'Unknown error during google OAuth 2.0 happened.');
-                res.redirect('/error');
-            }
-        }
+    app.get('/auth/google/callback', passport.authenticate('google', {
+            failureRedirect: '/error',
+            successRedirect: '/auth/success',
+        }),
     );
 }
 
