@@ -87,7 +87,7 @@ export function loadRoutes(app: Application) {
              */
             if (typeof route.onLoad === 'function') {
                 debug('File has declared an onLoad() function! Calling now...');
-                const variables: Map<string, any> = await route.onLoad(req, res);
+                const variables: Map<string, string> = await route.onLoad(req, res);
                 /**
                  * Check if map is not empty
                  */

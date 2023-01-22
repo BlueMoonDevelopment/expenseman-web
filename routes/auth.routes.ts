@@ -24,7 +24,7 @@ function setupPostSignup(app: Application) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    validateStatus: function (status) {
+                    validateStatus: function () {
                         return true;
                     },
                 });
@@ -77,7 +77,7 @@ function setupPostSignin(app: Application) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    validateStatus: function (status) {
+                    validateStatus: function () {
                         return true;
                     },
                 });

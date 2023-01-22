@@ -4,8 +4,8 @@ export const title = 'Success';
 export const pugfile = 'success.pug';
 export const urlpath = '/success';
 
-export async function onLoad(req: Request, res: Response): Promise<Map<string, any>> {
-    const map = new Map<string, any>();
+export async function onLoad(req: Request, res: Response): Promise<Map<string, string>> {
+    const map = new Map<string, string>();
     const msg = req.cookies.successmsg;
 
     if (!msg) {
