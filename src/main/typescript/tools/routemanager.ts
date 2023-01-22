@@ -2,16 +2,17 @@ import fs from 'fs';
 import path from 'path';
 import { Application } from 'express';
 import { debug, error, info } from './logmanager';
-import { isLoggedIn } from './controllers/auth.controller';
+import { isLoggedIn } from '../controllers/auth.controller';
+import { rootPath } from '../server';
 
 /**
  * Dynamically loads backend and frontend files and loads the views.
  * @param app
  */
 export function loadRoutes(app: Application) {
-    const backendPath = path.join(path.join(__dirname, 'views'), 'backend');
+    const backendPath = path.join(path.join(rootPath, 'views'), 'backend');
     const backendFiles = fs.readdirSync(backendPath).filter(file => file.endsWith('.ts'));
-    const frontendPath = path.join(path.join(__dirname, 'views'), 'frontend');
+    const frontendPath = path.join(path.join(rootPath, 'views'), 'frontend');
 
     info(`Loading backend files from ${backendPath}`);
 
@@ -25,6 +26,7 @@ export function loadRoutes(app: Application) {
         /**
          * Require the found file to import eveything inside the module.exports array
          */
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
         const route = require(filePath);
 
         /**
@@ -66,6 +68,7 @@ export function loadRoutes(app: Application) {
         /**
          * Dynamically loading options starts here
          */
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const options: any[string] = [];
         options['title'] = route.title;
 

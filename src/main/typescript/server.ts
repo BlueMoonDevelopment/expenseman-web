@@ -14,9 +14,9 @@ import passport from 'passport';
 /**
  * Required internal modules
  */
-import { info } from './logmanager';
-import { loadRoutes } from './routemanager';
-import { setupPassport } from './passportmanager';
+import { info } from './tools/logmanager';
+import { loadRoutes } from './tools/routemanager';
+import { setupPassport } from './tools/passportmanager';
 import { setupAuthRoutes } from './routes/auth.routes';
 
 /**
@@ -39,6 +39,7 @@ declare module 'express-session' {
  */
 const app: Application = express();
 const oneDay = 1000 * 60 * 60 * 24;
+export const rootPath = __dirname;
 
 /**
  * App Configuration

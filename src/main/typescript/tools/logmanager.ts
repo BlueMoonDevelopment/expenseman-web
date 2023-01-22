@@ -1,9 +1,9 @@
-import { debug_log } from './config.json';
+import { debug_log } from '../config.json';
 
 /**
-* If debug_log is enabled in config.json file, print out debug message to console
-* @param {string} msg The message to log
-*/
+ * If debug_log is enabled in config.json file, print out debug message to console
+ * @param {string} msg The message to log
+ */
 export function debug(msg: string): void {
     if (debug_log) {
         console.log(`[DEBUG] ${msg}`);
