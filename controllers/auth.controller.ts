@@ -10,9 +10,28 @@ export async function checkIfUserExists(emailVal: string): Promise<boolean> {
     return res.data.exists;
 }
 
-export function isLoggedIn(req: Request): boolean {
-    if (req.session.userId && req.session.accessToken) {
-        return true;
+export async function isLoggedIn(req: Request): Promise<boolean> {
+    const userId = req.session.userId;
+    const accessToken = req.session.accessToken;
+    if (userId && accessToken) {
+        const response = await axios.post('https://api.expenseman.app/auth/checktoken', JSON.stringify({
+            id: userId,
+            accessToken: accessToken,
+        }), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.data.matching) {
+            return true;
+        } else {
+            // Delete existing session
+            req.session.destroy((err) => {
+                if (err) console.log(err);
+            });
+            return false;
+        }
     } else {
         return false;
     }
