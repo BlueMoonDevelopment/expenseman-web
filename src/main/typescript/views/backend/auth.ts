@@ -10,6 +10,5 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
         res.cookie('errormsg', 'You are already logged in.');
         res.redirect('/error');
     }
-    const map = new Map<string, string>();
-    return map;
+    return new Map<string, string>();
 }
