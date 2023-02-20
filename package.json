@@ -9,7 +9,7 @@
     "css-watch": "npm run css-build -- --watch"
   },
   "dependencies": {
-    "@types/passport": "^1.0.11",
+    "@types/passport": "^1.0.12",
     "@types/passport-google-oauth": "^1.0.42",
     "axios": "^1.2.3",
     "body-parser": "^1.20.1",
