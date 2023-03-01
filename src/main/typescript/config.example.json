@@ -1,7 +1,8 @@
 {
-    "website_port": 8080,
-    "debug_log": false,
-    "session_secret": "your_secret",
-    "google_oauth_client_id": "your_clientid",
-    "google_oauth_client_secret": "your_client_secret"
+  "website_port": 8080,
+  "debug_log": false,
+  "session_secret": "your_secret",
+  "development_login_mode": false,
+  "google_oauth_client_id": "your_clientid",
+  "google_oauth_client_secret": "your_client_secret"
 }
