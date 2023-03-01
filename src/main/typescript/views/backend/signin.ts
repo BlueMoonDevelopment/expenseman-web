@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { isLoggedIn } from '../../controllers/auth.controller';
+import { development_login_mode } from '../../config.json';
 
 export const title = 'Sign In';
 export const pugfile = 'signin.pug';
@@ -9,16 +10,19 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
     if (await isLoggedIn(req)) {
         res.cookie('errormsg', 'You are already logged in.');
         res.redirect('/error');
+        return new Map<string, string>();
     }
     const map = new Map<string, string>();
-    const email = req.cookies.googleEmail;
 
-    if (!email) {
-        res.redirect('/auth');
-    } else {
-        res.clearCookie('googleEmail');
-        map.set('email', email);
+    if (!development_login_mode) {
+        const email = req.cookies.googleEmail;
+
+        if (!email) {
+            res.redirect('/auth');
+        } else {
+            res.clearCookie('googleEmail');
+            map.set('email', email);
+        }
     }
-
     return map;
 }

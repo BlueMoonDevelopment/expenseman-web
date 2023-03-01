@@ -9,6 +9,7 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
     if (await isLoggedIn(req)) {
         res.cookie('errormsg', 'You are already logged in.');
         res.redirect('/error');
+        return new Map<string, string>();
     }
     const map = new Map<string, string>();
     const email = req.cookies.googleEmail;
