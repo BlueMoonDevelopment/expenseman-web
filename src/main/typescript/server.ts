@@ -22,7 +22,7 @@ import { setupAuthRoutes } from './routes/auth.routes';
 /**
  * Required configuration sections
  */
-import { session_secret, website_port } from './config.json';
+import { development_login_mode, session_secret, website_port } from './config.json';
 
 /**
  * Session declaration (TS weirdness)
@@ -61,24 +61,25 @@ app.use(session({
 /**
  * Passport Configuration
  */
-app.use(passport.initialize());
-app.use(passport.session());
+if (!development_login_mode) {
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-passport.serializeUser(function (user, cb) {
-    cb(null, user);
-});
+    passport.serializeUser(function (user, cb) {
+        cb(null, user);
+    });
 
-passport.deserializeUser(function (obj, cb) {
-    if (obj) {
-        cb(null, obj);
-    }
-});
-
+    passport.deserializeUser(function (obj, cb) {
+        if (obj) {
+            cb(null, obj);
+        }
+    });
+    setupPassport(app);
+}
 
 /**
  * Routes Definitions
  */
-setupPassport(app);
 setupAuthRoutes(app);
 loadRoutes(app);
 
