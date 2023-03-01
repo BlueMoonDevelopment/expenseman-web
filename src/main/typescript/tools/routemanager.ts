@@ -103,7 +103,7 @@ export function loadRoutes(app: Application) {
                         if (!value || key == 'msg') continue;
                         values.set(key, value);
                     }
-                    options['values'] = values.values();
+                    options['values'] = Array.from(values.values());
                 }
 
                 if (variables.size > 0) {
