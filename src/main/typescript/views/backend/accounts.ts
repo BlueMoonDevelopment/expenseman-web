@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { isLoggedIn } from '../../controllers/auth.controller';
 import axios from 'axios';
 
-export const title = 'Sign In';
+export const title = 'List of accounts';
 export const pugfile = 'accounts.pug';
 export const urlpath = '/accounts';
 
@@ -25,6 +25,8 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
         },
     });
 
+    const map = new Map<string, string>();
+
     if (response.status != 200) {
         let msg = `Error ${response.status} An unknown error happened.`;
         if (response.data.message) {
@@ -35,9 +37,13 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
         return new Map<string, string>();
     } else {
         // Status 200
-        console.log(response.data);
+        if (response.data.length == 0) {
+            const msg = 'No accounts have been found for your user.';
+            res.cookie('successmsg', msg);
+            res.redirect('/success');
+            return new Map<string, string>();
+        }
+        map.set(response.data[0]._id, response.data[0].toString());
     }
-
-    const map = new Map<string, string>();
     return map;
 }
