@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { isLoggedIn } from '../../controllers/auth.controller';
 import axios from 'axios';
-import { debug } from '../../tools/logmanager';
 
 export const title = 'Sign In';
 export const pugfile = 'accounts.pug';
@@ -36,7 +35,7 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
         return new Map<string, string>();
     } else {
         // Status 200
-        debug(response.data);
+        console.log(response.data);
     }
 
     const map = new Map<string, string>();
