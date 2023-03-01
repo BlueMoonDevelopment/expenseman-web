@@ -2,6 +2,6 @@ extends layout
 
 block layout-content
     ul
-        - console.log('Values: ' + values);
-        each val, key in values
-            li= key + ': ' + val
+        - console.log('Values: ' + values.values());
+        each val in values.values()
+            li= val
