@@ -21,6 +21,9 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
             'Content-Type': 'application/json',
             'x-access-token': accessToken,
         },
+        validateStatus: function () {
+            return true;
+        },
     });
 
     debug(response.data);
