@@ -94,12 +94,24 @@ export function loadRoutes(app: Application) {
                 /**
                  * Check if map is not empty
                  */
+
+                const values = new Map<string, string>();
+
+                if (variables.size >= 1) {
+                    for (const key of variables.keys()) {
+                        const value = variables.get(key);
+                        if (!value || key == 'msg') continue;
+                        values.set(key, value);
+                    }
+                    options['values'] = values;
+                }
+
                 if (variables.size > 0) {
                     /**
                      * Looping through all the entries in the map and putting them into the options Array.
                      */
                     for (const key of variables.keys()) {
-                        const value = variables.get(key)?.toString();
+                        const value = variables.get(key);
                         options[key] = value;
                         debug(`Loaded key: ${key} as value: ${value}`);
                     }
