@@ -19,6 +19,5 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
     } else {
         map.set('redirect', '/auth/google');
     }
-    
     return map;
 }

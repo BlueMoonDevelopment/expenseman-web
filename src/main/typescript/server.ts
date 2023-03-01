@@ -22,7 +22,7 @@ import { setupAuthRoutes } from './routes/auth.routes';
 /**
  * Required configuration sections
  */
-import { development_login_mode, session_secret, website_port } from './config.json';
+import { api_endpoint_url, development_login_mode, session_secret, website_port } from './config.json';
 
 /**
  * Session declaration (TS weirdness)
@@ -87,5 +87,6 @@ loadRoutes(app);
  * Server Activation
  */
 app.listen(website_port, () => {
+    info(`Configured API endpoint: ${api_endpoint_url}`);
     info(`Listening to requests at 127.0.0.1:${website_port}`);
 });

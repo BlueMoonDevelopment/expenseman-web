@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { isLoggedIn } from '../../controllers/auth.controller';
+import { api_endpoint_url } from '../../config.json';
 import axios from 'axios';
 
 export const title = 'List of accounts';
@@ -15,7 +16,7 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
 
     const accessToken = req.session.accessToken;
 
-    const response = await axios.get('https://api.expenseman.app/accounts', {
+    const response = await axios.get(api_endpoint_url + '/accounts', {
         headers: {
             'Content-Type': 'application/json',
             'x-access-token': accessToken,
