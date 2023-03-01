@@ -43,6 +43,12 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
             res.redirect('/success');
             return new Map<string, string>();
         }
+
+        for (const account of response.data) {
+            console.log(`ID: ${account._id}`);
+            console.log(`Content: ${account}`);
+        }
+
         map.set(response.data[0]._id, response.data[0].toString());
     }
     return map;
