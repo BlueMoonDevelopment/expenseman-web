@@ -3,7 +3,7 @@
   "debug_log": false,
   "session_secret": "your_secret",
   "development_login_mode": false,
-  "api-endpoint-url": "https://api.expenseman.app",
+  "api_endpoint_url": "https://api.expenseman.app",
   "google_oauth_client_id": "your_clientid",
   "google_oauth_client_secret": "your_client_secret"
 }
