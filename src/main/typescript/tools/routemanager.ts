@@ -99,7 +99,7 @@ export function loadRoutes(app: Application) {
                      * Looping through all the entries in the map and putting them into the options Array.
                      */
                     for (const key of variables.keys()) {
-                        const value = variables.get(key);
+                        const value = variables.get(key)?.toString();
                         options[key] = value;
                         debug(`Loaded key: ${key} as value: ${value}`);
                     }
