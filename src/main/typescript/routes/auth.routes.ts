@@ -1,6 +1,7 @@
 import { Application, Request, Response } from 'express';
 import { checkIfUserExists, isLoggedIn } from '../controllers/auth.controller';
 import axios, { AxiosResponse } from 'axios';
+import { api_endpoint_url } from '../config.json';
 
 function setupPostSignup(app: Application) {
     app.post('/auth/signup', async (req, res) => {
@@ -17,7 +18,7 @@ function setupPostSignup(app: Application) {
                 res.cookie('errormsg', 'User is already existing.');
                 res.redirect('/error');
             } else {
-                const response = await axios.post('https://api.expenseman.app/auth/signup', JSON.stringify({
+                const response = await axios.post(api_endpoint_url + '/auth/signup', JSON.stringify({
                     email: email,
                     password: pw,
                 }), {
@@ -70,7 +71,7 @@ function setupPostSignin(app: Application) {
 
         checkIfUserExists(email).then(async (exists) => {
             if (exists) {
-                const response = await axios.post('https://api.expenseman.app/auth/signin', JSON.stringify({
+                const response = await axios.post(api_endpoint_url + '/auth/signin', JSON.stringify({
                     email: email,
                     password: pw,
                 }), {
