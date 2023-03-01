@@ -46,10 +46,10 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
 
         for (const account of response.data) {
             console.log(`ID: ${account._id}`);
-            console.log(`Content: ${account}`);
+            console.log(`Content: ${JSON.stringify(account)}`);
         }
 
-        map.set(response.data[0]._id, response.data[0].toString());
+        map.set(response.data[0]._id, JSON.stringify(response.data[0]));
     }
     return map;
 }
