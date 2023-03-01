@@ -16,7 +16,7 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
 
     const accessToken = req.session.accessToken;
 
-    const response = await axios.post('https://api.expenseman.app/accounts', {
+    const response = await axios.get('https://api.expenseman.app/accounts', {
         headers: {
             'Content-Type': 'application/json',
             'x-access-token': accessToken,
@@ -33,11 +33,12 @@ export async function onLoad(req: Request, res: Response): Promise<Map<string, s
         }
         res.cookie('errormsg', msg);
         res.status(response.status).redirect('/error');
+        return new Map<string, string>();
     } else {
         // Status 200
         debug(response.data);
     }
-    
+
     const map = new Map<string, string>();
     return map;
 }
